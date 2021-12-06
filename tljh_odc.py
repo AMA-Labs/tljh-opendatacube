@@ -99,6 +99,7 @@ def tljh_config_post_install(config):
         'default_app', 'jupyterlab')
 
     config['user_environment'] = user_environment
+    
     """
     Configure shared directory (src: https://github.com/kafonek/tljh-shared-directory/blob/master/tljh_shared_directory.py)
     """
