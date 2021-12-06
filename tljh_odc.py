@@ -99,7 +99,7 @@ def tljh_config_post_install(config):
         'default_app', 'jupyterlab')
 
     config['user_environment'] = user_environment
-    
+
     """
     Configure shared directory (src: https://github.com/kafonek/tljh-shared-directory/blob/master/tljh_shared_directory.py)
     """
@@ -155,12 +155,13 @@ def tljh_post_install():
     su_postgres("psql -c 'ALTER DATABASE datacube OWNER TO odc_db_admin;'")
 
     # initialise datacube database  default products
-    sh.bash("-c", f"source /opt/tljh/user/bin/activate && DB_HOSTNAME=localhost DB_USERNAME=odc_db_admin DB_PASSWORD={odc_db_admin_password} DB_DATABASE=datacube dc-sync-products https://raw.githubusercontent.com/woodcockr/tljh-oea/main/products.csv")
+    sh.bash("-c", f"source /opt/tljh/user/bin/activate && DB_HOSTNAME=localhost DB_USERNAME=odc_db_admin DB_PASSWORD={odc_db_admin_password} DB_DATABASE=datacube dc-sync-products ./products.csv")
 
     # index default products
     sh.bash("-c", f"source /opt/tljh/user/bin/activate && DB_HOSTNAME=localhost DB_USERNAME=odc_db_admin DB_PASSWORD={odc_db_admin_password} DB_DATABASE=datacube stac-to-dc --bbox='{bbox}' --catalog-href='https://earth-search.aws.element84.com/v0/' --collections='sentinel-s2-l2a-cogs' --datetime='{time_range}'")
     sh.bash("-c", f"source /opt/tljh/user/bin/activate && DB_HOSTNAME=localhost DB_USERNAME=odc_db_admin DB_PASSWORD={odc_db_admin_password} DB_DATABASE=datacube stac-to-dc --catalog-href='https://planetarycomputer.microsoft.com/api/stac/v1/' --collections='io-lulc'")
     sh.bash("-c", f"source /opt/tljh/user/bin/activate && DB_HOSTNAME=localhost DB_USERNAME=odc_db_admin DB_PASSWORD={odc_db_admin_password} DB_DATABASE=datacube stac-to-dc --bbox='{bbox}' --catalog-href='https://planetarycomputer.microsoft.com/api/stac/v1/' --collections='nasadem'")
+    sh.bash("-c", f"source /opt/tljh/user/bin/activate && DB_HOSTNAME=localhost DB_USERNAME=odc_db_admin DB_PASSWORD={odc_db_admin_password} DB_DATABASE=datacube stac-to-dc --bbox='{bbox}' --catalog-href='https://planetarycomputer.microsoft.com/api/stac/v1/' --collections='landsat-8-c2-l2' --datetime='{time_range}")
 
 @hookimpl
 def tljh_new_user_create(username):
