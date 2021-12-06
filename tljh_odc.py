@@ -1,4 +1,5 @@
 from tljh.hooks import hookimpl
+from tljh.user import ensure_group
 import sh
 
 @hookimpl
@@ -98,6 +99,22 @@ def tljh_config_post_install(config):
         'default_app', 'jupyterlab')
 
     config['user_environment'] = user_environment
+    """
+    Configure shared directory (src: https://github.com/kafonek/tljh-shared-directory/blob/master/tljh_shared_directory.py)
+    """
+    ### mkdir -p /srv/shared
+    ### sudo chown  root:jupyterhub-users /srv/shared
+    ### sudo chmod 777 /srv/shared
+    ### sudo chmod g+s /srv/shared
+    ### sudo ln -s /srv/shared /etc/skel/shared
+    sh.mkdir('/srv/shared', '-p')
+    # jupyterhub-users doesn't get created until a user logs in
+    # make sure it's created before changing permissions on directory
+    ensure_group('jupyterhub-users') 
+    sh.chown('root:jupyterhub-users', '/srv/shared')
+    sh.chmod('777', '/srv/shared')
+    sh.chmod('g+s', '/srv/shared')
+    sh.ln('-s', '/srv/shared', '/etc/skel/shared')
 
 @hookimpl
 def tljh_post_install():
@@ -109,8 +126,9 @@ def tljh_post_install():
     postgres_password = 'superPassword'
     odc_db_admin_password = 'insecurePassword'
     odc_db_user_password = 'worrysomePassword'
-    bbox='146.8,-36.3, 147.3, -35.8'
-    time_range='2021-06-01/2021-07-01'
+    #Change extents with bbox='<left>,<bottom>,<right>,<top>'
+    bbox='-83.675395, 36.540738, -75.242266, 39.466012'
+    time_range='2017-06-01/2021-11-01'
 
     # Start postgresql
     sh.systemctl("enable", "postgresql")
