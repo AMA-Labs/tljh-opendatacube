@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='odc-tljh',
+    name='tljh-odc',
     version='0.1',
     description='An Open Data Cube (ODC) deployment of The Littlest JupyterHub (TLJH)',
     url='https://github.com/jcrattz/odc-tljh',
