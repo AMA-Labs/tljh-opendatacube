@@ -155,7 +155,7 @@ def tljh_post_install():
     su_postgres("psql -c 'ALTER DATABASE datacube OWNER TO odc_db_admin;'")
 
     # initialise datacube database  default products
-    sh.bash("-c", f"source /opt/tljh/user/bin/activate && DB_HOSTNAME=localhost DB_USERNAME=odc_db_admin DB_PASSWORD={odc_db_admin_password} DB_DATABASE=datacube dc-sync-products ./products.csv")
+    sh.bash("-c", f"source /opt/tljh/user/bin/activate && DB_HOSTNAME=localhost DB_USERNAME=odc_db_admin DB_PASSWORD={odc_db_admin_password} DB_DATABASE=datacube dc-sync-products https://raw.githubusercontent.com/AMA-Labs/odc-tljh/master/products.csv")
 
     # index default products
     sh.bash("-c", f"source /opt/tljh/user/bin/activate && DB_HOSTNAME=localhost DB_USERNAME=odc_db_admin DB_PASSWORD={odc_db_admin_password} DB_DATABASE=datacube stac-to-dc --bbox='{bbox}' --catalog-href='https://earth-search.aws.element84.com/v0/' --collections='sentinel-s2-l2a-cogs' --datetime='{time_range}'")
