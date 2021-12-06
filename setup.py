@@ -8,7 +8,7 @@ setup(
     author='AMA Earth Analytics Lab',
     author_email='eal@ama-inc.com',
     license='Apache License 2.0',
-    pymodules = ['tljh_odc'],
+    py_modules = ['tljh_odc'],
     entry_points={
         'tljh': [
             'odc = tljh_odc',
