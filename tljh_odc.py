@@ -6,26 +6,26 @@ import sh
 def tljh_extra_user_conda_packages():
     return [
         'gdal==3.3.2',
-        'Cython',
-        'numpy',
-        'pandas',
-        'xarray',
-        'matplotlib-base',
-        'rasterio',
-        'folium',
-        'scipy',
-        'scikit-image',
-        'geopandas',
-        'tqdm',
-        'click',
+        # 'Cython',
+        # 'numpy',
+        # 'pandas',
+        # 'xarray',
+        # 'matplotlib-base',
+        # 'rasterio',
+        # 'folium',
+        # 'scipy',
+        # 'scikit-image',
+        # 'geopandas',
+        # 'tqdm',
+        # 'click',
         ]
 
 @hookimpl
 def tljh_extra_user_pip_packages():
     return [
-        # 'Cython',
-        # 'numpy',
-        # 'rasterio',
+        'Cython',
+        'numpy',
+        'rasterio',
         '--extra-index-url=https://packages.dea.ga.gov.au',
         'datacube[performance,s3]==1.8.6',
         'eodatasets3',
@@ -43,15 +43,15 @@ def tljh_extra_user_pip_packages():
         'odc_ppt',
         'datacube-stats',
         # 'gdal==3.3.2',
-        # 'folium',
-        # 'scipy',
-        # 'pandas==1.3.4',
-        # 'xarray',
-        # 'matplotlib==3.4.3',
-        # 'geopandas',
-        # 'scikit-image',
-        # 'tqdm',
-        # 'click<8.0.0',
+        'folium',
+        'scipy',
+        'pandas==1.3.4',
+        'xarray',
+        'matplotlib==3.4.3',
+        'geopandas',
+        'scikit-image',
+        'tqdm',
+        'click<8.0.0',
         'python-dateutil==2.7.5',
         # '--no-binary=Cython,rasterio,Shapely,pygeos,netCDF4,pyproj,fc,hdstats,lmdb,lxml,numexpr,pyzmq,msgpack,ruamel.yaml.clib,zstandard'
     ]
@@ -91,19 +91,19 @@ def tljh_custom_jupyterhub_config(c):
     c.Spawner.default_url = '/lab'
 
     # Setup AWS Cognito OAuthenticator
-    c.GenericOAuthenticator.client_id = "[your app client ID]"
-    c.GenericOAuthenticator.client_secret = "[your app client secret]"
-    c.GenericOAuthenticator.oauth_callback_url = "https://[your-jupyterhub-host]/hub/oauth_callback"
+    # c.JupyterHub.authenticator_class = "generic"
+    # c.GenericOAuthenticator.client_id = "[your app client ID]"
+    # c.GenericOAuthenticator.client_secret = "[your app client secret]"
+    # c.GenericOAuthenticator.oauth_callback_url = "https://[your-jupyterhub-host]/hub/oauth_callback"
 
-    c.GenericOAuthenticator.authorize_url = "https://your-AWSCognito-domain/oauth2/authorize"
-    c.GenericOAuthenticator.token_url = "https://your-AWSCognito-domain/oauth2/token"
-    c.GenericOAuthenticator.userdata_url = "https://your-AWSCognito-domain/oauth2/userInfo"
-    c.GenericOAuthenticator.logout_redirect_url = "https://your-AWSCognito-domain/oauth2/logout"
+    # c.GenericOAuthenticator.authorize_url = "https://your-AWSCognito-domain/oauth2/authorize"
+    # c.GenericOAuthenticator.token_url = "https://your-AWSCognito-domain/oauth2/token"
+    # c.GenericOAuthenticator.userdata_url = "https://your-AWSCognito-domain/oauth2/userInfo"
+    # c.GenericOAuthenticator.logout_redirect_url = "https://your-AWSCognito-domain/oauth2/logout"
 
-    # these are always the same
-    c.GenericOAuthenticator.login_service = "AWS Cognito"
-    c.GenericOAuthenticator.username_key = "username"
-    c.GenericOAuthenticator.userdata_method = "POST"
+    # c.GenericOAuthenticator.login_service = "AWS Cognito"
+    # c.GenericOAuthenticator.username_key = "username"
+    # c.GenericOAuthenticator.userdata_method = "POST"
 
 @hookimpl
 def tljh_config_post_install(config):
