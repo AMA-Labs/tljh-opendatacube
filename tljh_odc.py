@@ -87,19 +87,26 @@ def tljh_custom_jupyterhub_config(c):
     Anything you can put in `jupyterhub_config.py` can
     be here.
     """
-    pass
+    #Set JupyterLab to be default
+    c.Spawner.default_url = '/lab'
+
+    # Setup AWS Cognito OAuthenticator
+    c.GenericOAuthenticator.client_id = "[your app client ID]"
+    c.GenericOAuthenticator.client_secret = "[your app client secret]"
+    c.GenericOAuthenticator.oauth_callback_url = "https://[your-jupyterhub-host]/hub/oauth_callback"
+
+    c.GenericOAuthenticator.authorize_url = "https://your-AWSCognito-domain/oauth2/authorize"
+    c.GenericOAuthenticator.token_url = "https://your-AWSCognito-domain/oauth2/token"
+    c.GenericOAuthenticator.userdata_url = "https://your-AWSCognito-domain/oauth2/userInfo"
+    c.GenericOAuthenticator.logout_redirect_url = "https://your-AWSCognito-domain/oauth2/logout"
+
+    # these are always the same
+    c.GenericOAuthenticator.login_service = "AWS Cognito"
+    c.GenericOAuthenticator.username_key = "username"
+    c.GenericOAuthenticator.userdata_method = "POST"
 
 @hookimpl
 def tljh_config_post_install(config):
-    """
-    Set JupyterLab to be default
-    """
-    user_environment = config.get('user_environment', {})
-    user_environment['default_app'] = user_environment.get(
-        'default_app', 'jupyterlab')
-
-    config['user_environment'] = user_environment
-
     """
     Configure shared directory (src: https://github.com/kafonek/tljh-shared-directory/blob/master/tljh_shared_directory.py)
     """
