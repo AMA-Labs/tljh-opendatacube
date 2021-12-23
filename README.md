@@ -19,5 +19,5 @@ For Example:
 #!/bin/bash
 curl https://raw.githubusercontent.com/jupyterhub/the-littlest-jupyterhub/master/bootstrap/bootstrap.py \
  | sudo python3 - \
-   --admin odc-admin:<replacepassword> --show-progress-page --plugin git+https://github.com/AMA-Labs/odc-tljh
+   --admin odc-admin:<replacepassword> --show-progress-page --plugin git+https://github.com/AMA-Labs/tljh-opendatacube
 ```
