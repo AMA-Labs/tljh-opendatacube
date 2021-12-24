@@ -4,7 +4,7 @@ from tljh.hooks import hookimpl
 from tljh.user import ensure_group
 
 # CONFIG #
-LOAD_INITIAL_DATA = True
+LOAD_INITIAL_DATA = False
 DEFAULT_ENV = '/lab'  # /lab, /tree, or /nteract
 SHARED_DIR = '/srv/shared'  # not completely fool-proof, pls don't change this
 
