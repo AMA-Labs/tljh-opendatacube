@@ -1,6 +1,7 @@
+import os
+import sh
 from tljh.hooks import hookimpl
 from tljh.user import ensure_group
-import sh
 
 # CONFIG #
 LOAD_INITIAL_DATA = True
@@ -52,15 +53,15 @@ def setup_database_for_datacube():
     su_postgres("psql -c 'DROP ROLE IF EXISTS odc_db_user;'")
 
     # create database + extension
-    su_postgres("psql -c 'CREATE EXTENSION postgis;'")
-    su_postgres(f"psql -c 'CREATE DATABASE {DATABASE_NAME};'")
+    su_postgres("psql -c \'CREATE EXTENSION postgis;\'")
+    su_postgres(f"psql -c \'CREATE DATABASE {DATABASE_NAME};\'")
 
     # configure postgres to work with datacube
     su_postgres(f"psql -c \"ALTER USER postgres PASSWORD \'{POSTGRES_PW}\';\"")
     su_postgres(f"source /opt/tljh/user/bin/activate && DB_HOSTNAME=localhost DB_USERNAME=postgres DB_PASSWORD={POSTGRES_PW} DB_DATABASE={DATABASE_NAME} {DATABASE_NAME} -v system init")
     su_postgres(f"psql -c \"CREATE ROLE {DB_ADMIN_ROLE} WITH LOGIN IN ROLE {ODC_ADMIN_ROLE}, {ODC_USER_ROLE} ENCRYPTED PASSWORD \'{DB_ADMIN_PW}\';\"")
     su_postgres(f"psql -c \"CREATE ROLE {DB_USER_ROLE} WITH LOGIN IN ROLE {ODC_USER_ROLE} ENCRYPTED PASSWORD \'{DB_USER_PW}\';\"")
-    su_postgres(f"psql -c 'ALTER DATABASE {DATABASE_NAME} OWNER TO {DB_ADMIN_ROLE};'")
+    su_postgres(f"psql -c \'ALTER DATABASE {DATABASE_NAME} OWNER TO {DB_ADMIN_ROLE};\'")
 
 
 @hookimpl
@@ -148,6 +149,7 @@ def tljh_config_post_install(config):
     sh.chown('root:jupyterhub-users', SHARED_DIR)  # let the group own it
     sh.chmod('777', SHARED_DIR)  # allow everyone access
     sh.chmod('g+s', SHARED_DIR)  # set group id
+    os.system('rm -rf /etc/skel/shared/shared')  # reinstall compatability
     sh.ln('-s',  SHARED_DIR, '/etc/skel/shared')  # symlink
 
 @hookimpl
