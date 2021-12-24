@@ -148,7 +148,7 @@ def tljh_config_post_install(config):
     sh.chown('root:jupyterhub-users', SHARED_DIR)  # let the group own it
     sh.chmod('777', SHARED_DIR)  # allow everyone access
     sh.chmod('g+s', SHARED_DIR)  # set group id
-    sh.ln('-s', '/etc/skel/shared', SHARED_DIR)  # symlink
+    # sh.ln('-s', '/etc/skel/shared', SHARED_DIR)  # symlink   # TODO -- skipping for now, fix later?
 
 @hookimpl
 def tljh_post_install():
