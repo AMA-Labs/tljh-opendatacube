@@ -42,30 +42,27 @@ def setup_default_products():
 
 def setup_database_for_datacube():
 
-
-    DB_NAME = 'datacube'
-
     sh.systemctl("enable", "postgresql")
     sh.service("postgresql", "restart")
 
     su_postgres = sh.su.bake("-", "postgres", "-c")
 
     # ensure we're starting from scratch
-    su_postgres(f"psql -c \'DROP DATABASE IF EXISTS {DB_NAME};\'")
+    su_postgres(f"psql -c \'DROP DATABASE IF EXISTS {DATABASE_NAME};\'")
     su_postgres("psql -c \'DROP EXTENSION IF EXISTS postgis;\'")
     su_postgres(f"psql -c \'DROP ROLE IF EXISTS {DB_ADMIN_ROLE};\'")
     su_postgres(f"psql -c \'DROP ROLE IF EXISTS {DB_USER_ROLE};\'")
 
     # create database + extension
     su_postgres("psql -c \'CREATE EXTENSION postgis;\'")
-    su_postgres(f"psql -c \'CREATE DATABASE {DB_NAME};\'")
+    su_postgres(f"psql -c \'CREATE DATABASE {DATABASE_NAME};\'")
 
     # configure postgres to work with datacube
     su_postgres(f"psql -c \"ALTER USER postgres PASSWORD \'{POSTGRES_PW}\';\"")
     su_postgres(f"source /opt/tljh/user/bin/activate && DB_HOSTNAME=localhost DB_USERNAME=postgres DB_PASSWORD={POSTGRES_PW} DB_DATABASE={DATABASE_NAME} {DATABASE_NAME} -v system init")
     su_postgres(f"psql -c \"CREATE ROLE {DB_ADMIN_ROLE} WITH LOGIN IN ROLE {ODC_ADMIN_ROLE}, {ODC_USER_ROLE} ENCRYPTED PASSWORD \'{DB_ADMIN_PW}\';\"")
     su_postgres(f"psql -c \"CREATE ROLE {DB_USER_ROLE} WITH LOGIN IN ROLE {ODC_USER_ROLE} ENCRYPTED PASSWORD \'{DB_USER_PW}\';\"")
-    su_postgres(f"psql -c \'ALTER DATABASE {DB_NAME} OWNER TO {DB_ADMIN_ROLE};\'")
+    su_postgres(f"psql -c \'ALTER DATABASE {DATABASE_NAME} OWNER TO {DB_ADMIN_ROLE};\'")
 
 
 @hookimpl
