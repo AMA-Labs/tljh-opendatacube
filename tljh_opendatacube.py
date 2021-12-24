@@ -53,7 +53,7 @@ def setup_database_for_datacube():
 
     # create database + extension
     su_postgres("psql -c 'CREATE EXTENSION postgis;'")
-    su_postgres("psql -c 'CREATE DATABASE {DATABSE_NAME};'")
+    su_postgres(f"psql -c 'CREATE DATABASE {DATABASE_NAME};'")
 
     # configure postgres to work with datacube
     su_postgres(f"psql -c \"ALTER USER postgres PASSWORD \'{POSTGRES_PW}\';\"")
