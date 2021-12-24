@@ -143,12 +143,12 @@ def tljh_config_post_install(config):
     Configure shared directory and change config mods
      - src: https://github.com/kafonek/tljh-shared-directory/blob/master/tljh_shared_directory.py
     """
-    sh.mkdir(f'{SHARED_DIR}', '-p')  # make a shared folder
+    sh.mkdir(SHARED_DIR, '-p')  # make a shared folder
     ensure_group('jupyterhub-users')  # create teh user group since no one's logged in yet
-    sh.chown('root:jupyterhub-users', f'{SHARED_DIR}')  # let the group own it
-    sh.chmod('777', f'{SHARED_DIR}')  # allow everyone access
-    sh.chmod('g+s', f'{SHARED_DIR}')  # set group id
-    sh.ln('-s',  f'{SHARED_DIR}', '/etc/skel/shared')  # symlink
+    sh.chown('root:jupyterhub-users', SHARED_DIR)  # let the group own it
+    sh.chmod('777', SHARED_DIR)  # allow everyone access
+    sh.chmod('g+s', SHARED_DIR)  # set group id
+    sh.ln('-s',  SHARED_DIR, '/etc/skel/shared')  # symlink
 
 @hookimpl
 def tljh_post_install():
