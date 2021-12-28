@@ -83,7 +83,7 @@ def setup_database_for_datacube():
 
 def setup_odc_gee():
     subprocess.run('git clone https://github.com/ceos-seo/odc-gee.git /home/ubuntu/odc-gee', shell=True)
-    install_cmd = 'sudo /opt/tljh/user/bin/python -m pip install -e /home/ubuntu/odc-gee --target=/opt/tljh/user/lib/python3.9/site-packages'
+    install_cmd = 'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/pip install -e /home/ubuntu/odc-gee'
     subprocess.run(install_cmd, shell=True)
 
 
