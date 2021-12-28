@@ -155,6 +155,7 @@ def tljh_extra_hub_pip_packages():
 def tljh_extra_apt_packages():
     return [
         'curl',
+        'git',
         'unzip',
         'zip',
         'libpq-dev',
