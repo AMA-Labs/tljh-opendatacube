@@ -82,11 +82,7 @@ def setup_database_for_datacube():
 
 
 def setup_odc_gee():
-
-    print('Setting up ODC_GEE')
-
     subprocess.run('git clone https://github.com/ceos-seo/odc-gee.git /home/ubuntu/odc-gee', shell=True)
-
     install_cmd = 'sudo /opt/tljh/user/bin/python -m pip install -e /home/ubuntu/odc-gee --target=/opt/tljh/user/lib/python3.9/site-packages'
     subprocess.run(install_cmd, shell=True)
 
@@ -181,7 +177,6 @@ def tljh_config_post_install(config):
      - src: https://github.com/kafonek/tljh-shared-directory/blob/master/tljh_shared_directory.py
     """
     setup_shared_directory()
-    setup_odc_gee()
 
 @hookimpl
 def tljh_post_install():
@@ -189,6 +184,7 @@ def tljh_post_install():
     Executes after installation and all the other hooks. Used to configure the postgres database for datacube
     """
     setup_database_for_datacube()
+    setup_odc_gee()
     if LOAD_INITIAL_DATA:
         setup_default_products()
 
