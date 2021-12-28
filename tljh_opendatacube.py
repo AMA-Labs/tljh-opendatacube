@@ -95,7 +95,8 @@ def setup_odc_gee():
     # install_cmd = 'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/pip install -e /home/ubuntu/odc-gee'
     # install_cmd = 'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/python -m pip install -e /home/ubuntu/odc-gee'
     # install_cmd = 'sudo su - ubuntu -c \'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/python -m pip install -e /home/ubuntu/odc-gee\''
-    install_cmd = 'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/python -m pip install -e odc-gee'
+    # install_cmd = 'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/python -m pip install -e odc-gee'
+    install_cmd = 'sudo -E /opt/tljh/user/bin/python -m pip install -e odc-gee'
     os.system(install_cmd)
     logger.info('The odc-gee plugin has been setup!')
 
