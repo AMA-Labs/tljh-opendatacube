@@ -82,9 +82,13 @@ def setup_database_for_datacube():
 
 
 def setup_odc_gee():
-    os.system('git clone https://github.com/ceos-seo/odc-gee.git /home/ubuntu/odc-gee')
+
+    print('Setting up ODC_GEE')
+
+    subprocess.run('git clone https://github.com/ceos-seo/odc-gee.git /home/ubuntu/odc-gee', shell=True)
+
     install_cmd = 'sudo /opt/tljh/user/bin/python -m pip install -e /home/ubuntu/odc-gee --target=/opt/tljh/user/lib/python3.9/site-packages'
-    os.system(install_cmd)
+    subprocess.run(install_cmd, shell=True)
 
 
 def setup_shared_directory():
@@ -218,20 +222,20 @@ db_hostname: {PSQL_HOST}"""
 
     # set up the user's datacube.conf file appropriately
     if user_type == 'user':
-        datacube_conf_settings +="""
-db_username: {DB_READ_ONLY_USER}
-db_password: {DB_READ_ONLY_PASS}"""
+        datacube_conf_settings += f"""
+db_username: {ODC_DB_READ_ONLY_USER}
+db_password: {ODC_DB_READ_ONLY_PASS}"""
 
     elif user_type == 'admin':
-        datacube_conf_settings += """
-db_username: {DB_ADMIN_USER}
-db_password: {DB_ADMIN_PASS}"""
+        datacube_conf_settings += f"""
+db_username: {ODC_DB_ADMIN_USER}
+db_password: {ODC_DB_ADMIN_PASS}"""
 
     else:
         # default to read-only
-        datacube_conf_settings += """
-db_username: {DB_READ_ONLY_USER}
-db_password: {DB_READ_ONLY_PASS}"""
+        datacube_conf_settings += f"""
+db_username: {ODC_DB_READ_ONLY_USER}
+db_password: {ODC_DB_READ_ONLY_PASS}"""
 
     # pop it in a file for the user
     with open(f'/home/{username}/.datacube.conf', 'w+') as f:
