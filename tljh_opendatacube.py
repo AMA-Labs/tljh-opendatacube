@@ -88,12 +88,12 @@ def setup_database_for_datacube():
 def setup_odc_gee():
     logger.info('Setting up the odc-gee plugin...')
     # subprocess.run('git clone https://github.com/ceos-seo/odc-gee.git /home/ubuntu/odc-gee', shell=False)
-    subprocess.run('git clone https://github.com/ceos-seo/odc-gee.git', shell=False)
+    subprocess.run('git clone https://github.com/ceos-seo/odc-gee.git', shell=True)
     # install_cmd = 'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/pip install -e /home/ubuntu/odc-gee'
     # install_cmd = 'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/python -m pip install -e /home/ubuntu/odc-gee'
     # install_cmd = 'sudo su - ubuntu -c \'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/python -m pip install -e /home/ubuntu/odc-gee\''
     install_cmd = 'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/python -m pip install -e odc-gee'
-    subprocess.run(install_cmd, shell=False)
+    subprocess.run(install_cmd, shell=True)
     logger.info('The odc-gee plugin has been setup!')
 
 
