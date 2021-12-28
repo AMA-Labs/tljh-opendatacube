@@ -6,6 +6,9 @@ from tljh.hooks import hookimpl
 from tljh.user import ensure_group
 import subprocess
 
+import logging
+logger = logging.getLogger("tljh")
+
 # CONFIG #
 LOAD_INITIAL_DATA = False
 DEFAULT_ENV = '/lab'  # /lab, /tree, or /nteract
@@ -49,6 +52,7 @@ def setup_default_products():
 
 def setup_database_for_datacube():
 
+    logger.info('Setting up the Postgresql DB for the Open Data Cube...')
     # TODO: create a read-only account for non-admin users
 
     # enable then restart teh service
@@ -82,12 +86,16 @@ def setup_database_for_datacube():
 
 
 def setup_odc_gee():
-    subprocess.run('git clone https://github.com/ceos-seo/odc-gee.git /home/ubuntu/odc-gee', shell=True)
-    install_cmd = 'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/pip install -e /home/ubuntu/odc-gee'
-    subprocess.run(install_cmd, shell=True)
+    logger.info('Setting up the odc-gee plugin...')
+    subprocess.run('git clone https://github.com/ceos-seo/odc-gee.git /home/ubuntu/odc-gee', shell=False)
+    # install_cmd = 'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/pip install -e /home/ubuntu/odc-gee'
+    install_cmd = 'source /opt/tljh/user/bin/activate && sudo -E /opt/tljh/user/bin/python -m pip install -e /home/ubuntu/odc-gee'
+    subprocess.run(install_cmd, shell=False)
+    logger.info('The odc-gee plugin has been setup!')
 
 
 def setup_shared_directory():
+    logger.info('Setting up a shared directory...')
     sh.mkdir(SHARED_DIR, '-p')  # make a shared folder
     ensure_group('jupyterhub-users')  # create teh user group since no one's logged in yet
     sh.chown('root:jupyterhub-users', SHARED_DIR)  # let the group own it
