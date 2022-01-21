@@ -86,6 +86,7 @@ def tljh_extra_user_pip_packages():
         'odc_ppt',
         'eodatasets3',
         'datacube-stats',
+        'python-dotenv'
         # '--no-binary=Cython,rasterio,Shapely,pygeos,netCDF4,pyproj,fc,hdstats,lmdb,lxml,numexpr,pyzmq,msgpack,ruamel.yaml.clib,zstandard'
     ]
 
@@ -94,7 +95,7 @@ def tljh_extra_hub_pip_packages():
     """
     Return list of extra pip packages to install in the hub environment.
     """
-    pass
+    'python-dotenv'
 
 @hookimpl
 def tljh_extra_apt_packages():
