@@ -22,10 +22,10 @@ def setup_database_for_datacube():
     su_postgres(f"psql -c \'CREATE DATABASE {os.getenv('ODC_DB_NAME', 'datacube')};\'")
 
     # set a pw for the postgres db user
-    su_postgres(f"psql -c \"ALTER USER {os.getenv('POSTGRES_DB_USER', 'odc_db_user')} PASSWORD \'{os.getenv('POSTGRES_DB_PASS', 'worrysomepPassword')}\';\"")
+    su_postgres(f"psql -c \"ALTER USER {os.getenv('POSTGRES_DB_USER', 'postgres')} PASSWORD \'{os.getenv('POSTGRES_DB_PASS', 'superPassword')}\';\"")
 
     # initialize the datacube
-    su_postgres(f"source /opt/tljh/user/bin/activate && DB_HOSTNAME={os.getenv('PSQL_HOST', 'localhost')} DB_USERNAME={os.getenv('POSTGRES_DB_USER', 'odc_db_user')} DB_PASSWORD={os.getenv('POSTGRES_DB_PASS', 'superPassword')} DB_DATABASE={os.getenv('ODC_DB_NAME', 'datacube')} datacube -v system init")
+    su_postgres(f"source /opt/tljh/user/bin/activate && DB_HOSTNAME={os.getenv('PSQL_HOST', 'localhost')} DB_USERNAME={os.getenv('POSTGRES_DB_USER', 'postgres')} DB_PASSWORD={os.getenv('POSTGRES_DB_PASS', 'superPassword')} DB_DATABASE={os.getenv('ODC_DB_NAME', 'datacube')} datacube -v system init")
 
     # create an admin role in the odc db
     su_postgres(f"psql -c \"CREATE ROLE {os.getenv('ODC_DB_ADMIN_USER', 'odc_db_admin')} WITH LOGIN IN ROLE agdc_admin, agdc_user ENCRYPTED PASSWORD \'{os.getenv('ODC_DB_ADMIN_PASS', 'insecurePassword')}\';\"")
@@ -33,7 +33,6 @@ def setup_database_for_datacube():
     # create user role in the odc db 
     su_postgres(f"psql -c \"CREATE ROLE {os.getenv('ODC_DB_READ_ONLY_USER', 'odc_db_user')} WITH LOGIN IN ROLE agdc_user ENCRYPTED PASSWORD \'{os.getenv('ODC_DB_READ_ONLY_PASS', 'worrysomepPassword')}\';\"")
     su_postgres(f"psql -c \'ALTER DATABASE {os.getenv('ODC_DB_NAME', 'datacube')} OWNER TO {os.getenv('ODC_DB_ADMIN_USER', 'odc_db_admin')};\'")
-
 
 def setup_odc_gee():
     logger.info('Setting up the odc-gee plugin...')
@@ -95,7 +94,9 @@ def tljh_extra_hub_pip_packages():
     """
     Return list of extra pip packages to install in the hub environment.
     """
-    'python-dotenv'
+    return [
+        'python-dotenv'
+    ]
 
 @hookimpl
 def tljh_extra_apt_packages():
@@ -185,7 +186,7 @@ db_hostname: {os.getenv('PSQL_HOST', 'localhost')}"""
     # set up the user's datacube.conf file appropriately
     if user_type == 'user':
         datacube_conf_settings += f"""
-db_username: {os.getenv('ODC_DB_READ_ONLY_USER', 'odc_db_user')}
+db_username: {os.getenv('ODC_DB_READ_ONLY_USER', 'postgres')}
 db_password: {os.getenv('POSTGRES_DB_PASS', 'worrysomepPassword')}"""
 
     elif user_type == 'admin':
@@ -196,7 +197,7 @@ db_password: {os.getenv('ODC_DB_ADMIN_PASS', 'insecurePassword')}"""
     else:
         # default to read-only
         datacube_conf_settings += f"""
-db_username: {os.getenv('ODC_DB_READ_ONLY_USER', 'odc_db_user')}
+db_username: {os.getenv('ODC_DB_READ_ONLY_USER', 'postgres')}
 db_password: {os.getenv('POSTGRES_DB_PASS', 'worrysomepPassword')}"""
 
     # pop it in a file for the user
