@@ -186,7 +186,7 @@ db_hostname: {os.getenv('PSQL_HOST', 'localhost')}"""
     # set up the user's datacube.conf file appropriately
     if user_type == 'user':
         datacube_conf_settings += f"""
-db_username: {os.getenv('ODC_DB_READ_ONLY_USER', 'postgres')}
+db_username: {os.getenv('ODC_DB_READ_ONLY_USER', 'odc_db_user')}
 db_password: {os.getenv('POSTGRES_DB_PASS', 'worrysomepPassword')}"""
 
     elif user_type == 'admin':
@@ -197,7 +197,7 @@ db_password: {os.getenv('ODC_DB_ADMIN_PASS', 'insecurePassword')}"""
     else:
         # default to read-only
         datacube_conf_settings += f"""
-db_username: {os.getenv('ODC_DB_READ_ONLY_USER', 'postgres')}
+db_username: {os.getenv('ODC_DB_READ_ONLY_USER', 'odc_db_user')}
 db_password: {os.getenv('POSTGRES_DB_PASS', 'worrysomepPassword')}"""
 
     # pop it in a file for the user
