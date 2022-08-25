@@ -31,7 +31,7 @@ def setup_database_for_datacube():
     su_postgres(f"psql -c \"CREATE ROLE {os.getenv('ODC_DB_ADMIN_USER', 'odc_db_admin')} WITH LOGIN IN ROLE agdc_admin, agdc_user ENCRYPTED PASSWORD \'{os.getenv('ODC_DB_ADMIN_PASS', 'insecurePassword')}\';\"")
 
     # create user role in the odc db 
-    su_postgres(f"psql -c \"CREATE ROLE {os.getenv('ODC_DB_READ_ONLY_USER', 'odc_db_user')} WITH LOGIN IN ROLE agdc_user ENCRYPTED PASSWORD \'{os.getenv('ODC_DB_READ_ONLY_PASS', 'worrysomepPassword')}\';\"")
+    su_postgres(f"psql -c \"CREATE ROLE {os.getenv('ODC_DB_READ_ONLY_USER', 'odc_db_user')} WITH LOGIN IN ROLE agdc_user ENCRYPTED PASSWORD \'{os.getenv('ODC_DB_READ_ONLY_PASS', 'worrysomePassword')}\';\"")
     su_postgres(f"psql -c \'ALTER DATABASE {os.getenv('ODC_DB_NAME', 'datacube')} OWNER TO {os.getenv('ODC_DB_ADMIN_USER', 'odc_db_admin')};\'")
 
 def setup_odc_gee():
@@ -187,7 +187,7 @@ db_hostname: {os.getenv('PSQL_HOST', 'localhost')}"""
     if user_type == 'user':
         datacube_conf_settings += f"""
 db_username: {os.getenv('ODC_DB_READ_ONLY_USER', 'odc_db_user')}
-db_password: {os.getenv('POSTGRES_DB_PASS', 'worrysomepPassword')}"""
+db_password: {os.getenv('POSTGRES_DB_PASS', 'worrysomePassword')}"""
 
     elif user_type == 'admin':
         datacube_conf_settings += f"""
@@ -198,7 +198,7 @@ db_password: {os.getenv('ODC_DB_ADMIN_PASS', 'insecurePassword')}"""
         # default to read-only
         datacube_conf_settings += f"""
 db_username: {os.getenv('ODC_DB_READ_ONLY_USER', 'odc_db_user')}
-db_password: {os.getenv('POSTGRES_DB_PASS', 'worrysomepPassword')}"""
+db_password: {os.getenv('POSTGRES_DB_PASS', 'worrysomePassword')}"""
 
     # pop it in a file for the user
     with open(f'/home/{username}/.datacube.conf', 'w+') as f:
